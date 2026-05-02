@@ -1,0 +1,20 @@
+# Configuration template for Vessel
+# Copy this file to config.yaml and fill in your details
+
+user:
+  whatsapp_jid: ""     # Your WhatsApp number, format: 6281234567890@s.whatsapp.net
+  your_name: ""        # What the AI should call you, e.g., John, Dad, User
+
+loved_one:
+  display_name: ""     # Name of the AI companion, e.g., Sarah, AI
+  age: 0               # Age of the AI persona
+  persona_path: "persona/system_prompt.txt"
+  voice_id: ""         # Voice ID from your TTS provider (e.g., MiniMax)
+
+bot:
+  name: "Vessel"
+  session_file: "session.db"
+  delay_min_seconds: 180      # Min delay before replying, in seconds
+  delay_max_seconds: 300      # Max delay before replying, in seconds
+  voice_note_chance_percent: 40  # Chance to reply with voice note
+  exit_command: "/exit"          # Command to gracefully shut down
