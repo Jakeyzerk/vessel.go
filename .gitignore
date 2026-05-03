@@ -36,3 +36,4 @@ persona/system_prompt.txt
 persona/farewell.txt
 session.db
 logbook.json
+config.yaml
