@@ -9,7 +9,7 @@ This is not a service. It is a self-hosted application. All data is stored local
 
 ---
 
-### 🆚 How Vessel is Different [+] BARU
+### 🆚 How Vessel is Different
 **Unlike standard AI chatbots, Vessel is built for one purpose: helping you navigate memory with intention.**
 
 | Standard AI Bots | Vessel.go |
@@ -36,7 +36,7 @@ For developers: Death is a `panic: runtime error` we cannot fix. We cannot resta
 
 ---
 
-### 📝 Core Features [+] BARU
+### 📝 Core Features
 **Vessel provides 3 core mechanisms for a healthy memory process:**
 
 1. **Define the Companion**: Edit `persona/system_prompt.txt` to define who the vessel embodies. This is how you give it voice and context.
