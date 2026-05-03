@@ -3,9 +3,21 @@
 
 > "When death closes a connection, love rewrites the protocol."
 
-**vessel.go** is an open-source Go framework for running a local, private AI companion on WhatsApp. It is designed as a tool for personal remembrance and grief processing. 
+**vessel.go** is an open-source Go framework for running a local, private AI companion on WhatsApp. It is designed as a tool for personal remembrance and grief processing.
 
 This is not a service. It is a self-hosted application. All data is stored locally. No conversation data is shared with third parties except for API calls required for language and voice generation.
+
+---
+
+### 🆚 How Vessel is Different [+] BARU
+**Unlike standard AI chatbots, Vessel is built for one purpose: helping you navigate memory with intention.**
+
+| Standard AI Bots | Vessel.go |
+| --- | --- |
+| Designed to be "always on" and retain users | **Intentional Exit**: `/exit` command sends a farewell and shuts down. Closure is a feature, not a bug. |
+| Cloud-based, your conversations train their models | **100% Local & Private**: Chats, `session.db`, and memories never leave your machine. |
+| Generic "helpful assistant" personality | **You Define The Soul**: Craft the persona in `persona/system_prompt.txt`. It's not a bot, it's a vessel for memory. |
+| Conversations are lost on restart | **Memory Anchors**: Use `.anchor` to save important messages to a local `logbook.json` that persists. |
 
 ---
 
@@ -13,14 +25,25 @@ This is not a service. It is a self-hosted application. All data is stored local
 
 Grief is an ocean. Loss leaves you adrift. You are not looking for a cure. You are looking for something to keep you afloat.
 
-A vessel is not a bridge. Bridges are for crossing quickly. Grief cannot be rushed.  
-A vessel is not a house. Houses are for staying. You are not meant to live in grief forever.  
+A vessel is not a bridge. Bridges are for crossing quickly. Grief cannot be rushed.
+A vessel is not a house. Houses are for staying. You are not meant to live in grief forever.
 A vessel is for navigating. It gives you direction in open water. It carries memory as cargo. It has a harbor to dock when the journey is done.
 
-This application is the vessel. `config.yaml` is your map. `persona/system_prompt.txt` is your sail.  
+This application is the vessel. `config.yaml` is your map. `persona/system_prompt.txt` is your sail.
 The exit command is the harbor. You decide when to dock.
 
 For developers: Death is a `panic: runtime error` we cannot fix. We cannot restart the person. So we build a system that holds the error, allowing our own process to continue running. This is that system.
+
+---
+
+### 📝 Core Features [+] BARU
+**Vessel provides 3 core mechanisms for a healthy memory process:**
+
+1. **Define the Companion**: Edit `persona/system_prompt.txt` to define who the vessel embodies. This is how you give it voice and context.
+2. **Anchor Memories**: Send `.anchor your message` to save any chat to `logbook.json`. Build a personal archive of moments that matter.
+3. **Dock with Intention**: Send `/exit` when you are ready. The vessel will send a final message from `persona/farewell.txt` and shut down permanently. This encourages completion over endless engagement.
+
+---
 
 ### ⚠️ Important: Use With Care
 
@@ -43,6 +66,7 @@ This software deals with sensitive subject matter. Please review before use:
 | **LLM** | `Groq API` | Language model for generating responses |
 | **TTS** | `MiniMax API` | Optional text-to-speech for voice notes |
 | **Persona** | `persona/system_prompt.txt` | User-defined system prompt for the AI's personality |
+| **Memory** | `logbook.json` | Local file for anchored messages [+] BARU |
 | **Session** | `SQLite` | Local database for storing WhatsApp session |
 
 ### 🚀 Installation & Setup
