@@ -80,3 +80,10 @@ This software deals with sensitive subject matter. Please review before use:
 git clone https://github.com/Jakeyzerk/vessel.go.git
 cd vessel.go
 go mod tidy
+
+
+#### 3. Setup Persona
+cp persona/template.txt persona/system_prompt.txt
+# Edit persona/system_prompt.txt to define your companion's name, traits, and backstory.
+# IMPORTANT: Never commit your personal system_prompt.txt to a public repo.
+# You can also edit persona/farewell.txt to customize the /exit message.
