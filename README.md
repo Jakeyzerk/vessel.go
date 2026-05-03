@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.png" alt="vessel.go" width="100%"/>
+</p>
+
 # vessel.go ⛵
 ### Compile Memory Into Companionship
 
