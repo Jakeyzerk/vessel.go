@@ -30,3 +30,9 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# Vessel private files - DO NOT COMMIT
+persona/system_prompt.txt
+persona/farewell.txt
+session.db
+logbook.json
