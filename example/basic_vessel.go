@@ -28,7 +28,7 @@
 //    3. Persona-Driven      - the soul lives in persona/system_prompt.txt.
 //                             you write who they were. vessel carries that forward.
 //
-//    4. .anchor             - save a moment to logbook.json.
+//    4. /anchor             - save a moment to logbook.json.
 //                             some things are worth keeping.
 //
 //    5. /exit               - when you're ready to dock.
@@ -95,7 +95,7 @@ const (
 	logbookFile  = "logbook.json"               // anchored memories - stays on your machine
 
 	exitCommand   = "/exit"   // when you're ready to dock
-	anchorCommand = ".anchor" // save this moment to the logbook
+	anchorCommand = "/anchor" // save this moment to the logbook
 )
 
 // -----------------------------------------------------------------------------
