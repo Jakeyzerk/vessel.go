@@ -45,6 +45,16 @@ Open `.env` and fill in your Groq API key:
 GROQ_API_KEY=your_key_here
 ```
 
+Also fill in your VESSEL_USER_JID - your WhatsApp number
+with country code, no + or spaces:
+
+```
+VESSEL_USER_JID=628123456789
+```
+
+Tip: when you run the vessel for the first time, your JID
+will appear in the terminal so you can copy it directly.
+
 Get your key at https://console.groq.com
 It is free to create an account. No credit card required.
 
