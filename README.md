@@ -28,7 +28,7 @@ You bring the code to life. You define who it carries. You decide when to dock.
 | Designed to be "always on" and retain users | **Intentional Exit**: `/exit` sends a farewell and shuts down. Closure is a feature, not a bug. |
 | Cloud-based, your conversations train their models | **100% Local and Private**: Chats, `session.db`, and memories never leave your machine. |
 | Generic "helpful assistant" personality | **You Define The Soul**: Write the persona in `persona/system_prompt.txt`. It is not a bot, it is a vessel for memory. |
-| Conversations are lost on restart | **Memory Anchors**: Use `.anchor` to save important messages to a local `logbook.json` that persists. |
+| Conversations are lost on restart | **Memory Anchors**: Use `/anchor` to save important messages to a local `logbook.json` that persists. |
 | Instant replies, no weight to them | **Typing Simulation**: Vessel pauses before replying. Grief does not rush. Neither does this. |
 
 ---
@@ -55,7 +55,7 @@ This is that system.
 **Vessel provides 3 core mechanisms for a healthy memory process:**
 
 1. **Define the Companion** - Edit `persona/system_prompt.txt` to define who the vessel carries. This is how you give it voice and context.
-2. **Anchor Memories** - Send `.anchor your message` to save any moment to `logbook.json`. A personal archive that never leaves your machine.
+2. **Anchor Memories** - Send `/anchor your message` to save any moment to `logbook.json`. A personal archive that never leaves your machine.
 3. **Dock with Intention** - Send `/exit` when you are ready. The vessel sends a final message from `persona/farewell.txt` and shuts down. Closure is built in.
 
 ---
