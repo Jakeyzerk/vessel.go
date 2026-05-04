@@ -134,6 +134,8 @@ var (
 	systemPrompt        string
 	farewellText        string
 	waClient            *whatsmeow.Client
+	// Single-Session Design: conversation history resets on restart.
+    // This is intentional. Each session is a visit, not a permanent connection.
 	conversationHistory []GroqMessage
 )
 
@@ -242,6 +244,7 @@ func main() {
 			panic(err)
 		}
 		fmt.Println("\n⛵ The vessel is afloat.")
+		fmt.Printf("   Listening for: %s\n", os.Getenv("VESSEL_USER_JID"))
 		fmt.Println("   Listening. Waiting. Here.")
 		fmt.Printf("   Send \"%s\" when you are ready to dock.\n\n", exitCommand)
 	}
