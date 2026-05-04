@@ -265,6 +265,13 @@ func handleMessage(evt *events.Message, apiKey string) {
 		return
 	}
 
+	// Vessel only speaks to one person.
+	// If someone else finds this number, they get silence.
+	allowedJID := os.Getenv("VESSEL_USER_JID")
+	if allowedJID != "" && evt.Info.Sender.User != allowedJID {
+		return
+	}
+
 	// Extract text message
 	text := evt.Message.GetConversation()
 	if text == "" {
