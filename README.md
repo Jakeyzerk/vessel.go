@@ -122,7 +122,7 @@ vessel.go/
 - [x] Groq LLM integration
 - [x] Typing simulation - vessel pauses before replying
 - [x] Mood-aware replies - short when heavy, longer when light
-- [x] `.anchor` command - save moments to logbook.json
+- [x] `/anchor` command - save moments to logbook.json
 - [x] `/exit` farewell and intentional shutdown
 - [x] Persona template with narrative examples
 - [ ] MiniMax TTS - vessel sends voice notes
