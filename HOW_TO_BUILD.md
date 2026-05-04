@@ -121,7 +121,7 @@ The vessel will:
 
 Two special commands you can use:
 
-`.anchor your message here`
+`/anchor your message here`
 Saves that message to `logbook.json` on your machine.
 Use this to mark moments worth keeping.
 
