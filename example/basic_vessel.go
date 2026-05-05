@@ -259,20 +259,26 @@ func main() {
 }
 
 // -----------------------------------------------------------------------------
-// MESSAGE HANDLER
+// handleMessage - updated allowed JID check
 // -----------------------------------------------------------------------------
 
 func handleMessage(evt *events.Message, apiKey string) {
-	// This is personal. Vessel doesn't speak in groups.
+	// This is personal. Vessel does not speak in groups.
 	if evt.Info.IsGroup {
 		return
 	}
 
 	// Vessel only speaks to one person.
-	// If someone else finds this number, they get silence.
+	// VESSEL_USER_WA  - your WhatsApp number (e.g. 628123456789)
+	// VESSEL_USER_JID - your internal WhatsApp JID (appears in terminal on first run)
+	// Both are checked. Either one matching is enough.
+	// If neither is set, vessel will respond to anyone - not recommended.
+	allowedWA  := os.Getenv("VESSEL_USER_WA")
 	allowedJID := os.Getenv("VESSEL_USER_JID")
-	if allowedJID != "" && evt.Info.Sender.User != allowedJID {
-		return
+	if allowedWA != "" || allowedJID != "" {
+		if evt.Info.Sender.User != allowedWA && evt.Info.Sender.User != allowedJID {
+			return // not the right person - vessel stays silent
+		}
 	}
 
 	// Extract text message
