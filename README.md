@@ -59,15 +59,21 @@ This is that system.
 3. **Dock with Intention** - Send `/exit` when you are ready. The vessel sends a final message from `persona/farewell.txt` and shuts down. Closure is built in.
 
 ---
-
 ### 🚀 Getting Started
 
 The fastest way to get vessel running is through the working example.
 
+**Requirements:**
+- Go 1.25+ 
+- Termux: `pkg install golang git sqlite clang -y`
+
+**Setup:**
 ```bash
 git clone https://github.com/Jakeyzerk/vessel.go.git
 cd vessel.go
 go mod tidy
+CGO_ENABLED=1 go run example/basic_vessel.go
+
 ```
 
 Then follow the full guide: **[HOW_TO_BUILD.md](HOW_TO_BUILD.md)**
@@ -96,7 +102,7 @@ vessel.go/
 
 | Component | Technology | Description |
 | --- | --- | --- |
-| **Language** | `Go 1.22+` | Core app logic with concurrency via Goroutines |
+| **Language** | `Go 1.25+` | Core app logic with concurrency via Goroutines |
 | **Messaging** | `whatsmeow` | WhatsApp Web API client library |
 | **LLM** | `Groq API` | Language model for generating responses |
 | **TTS** | `MiniMax API` | Optional text-to-speech for voice notes (coming soon) |
