@@ -3,7 +3,6 @@
 </p>
 
 # vessel.go ⛵
-> Compile Memory Into Companionship
 
 > "When death closes a connection, love rewrites the protocol."
 
