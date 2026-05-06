@@ -107,18 +107,9 @@ go run example/basic_vessel.go
 
 The first time you run this, it will ask you to log in.
 
-You have two options:
-
-**Option 1 - QR Code**
-Press `1`, then scan the QR code that appears in your terminal
-using WhatsApp on your second phone.
+You have to scan the QR code that appears in your terminal
+using WhatsApp on your second phone/other device
 Go to: WhatsApp > Linked Devices > Link a Device
-
-**Option 2 - Pairing Code**
-Press `2`, enter your second phone number with country code
-(example: 628123456789 for Indonesia, 60123456789 for Malaysia).
-WhatsApp will give you an 8-digit code to enter on your phone.
-Go to: WhatsApp > Settings > Linked Devices > Link with phone number
 
 Once connected, the terminal will show:
 
