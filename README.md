@@ -82,8 +82,6 @@ The fastest way to get vessel running is through the working example.
 git clone https://github.com/Jakeyzerk/vessel.go.git
 cd vessel.go
 go mod tidy
-CGO_ENABLED=1 go run example/basic_vessel.go
-
 ```
 1. Run `go run example/basic_vessel.go`
 2. Choose `2` for pairing code login
