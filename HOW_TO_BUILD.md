@@ -99,7 +99,7 @@ It does not have to be long.
 
 ---
 
-## STEP 4 - RUN THE EXAMPLE
+### STEP 4 - RUN THE EXAMPLE
 
 ```bash
 go run example/basic_vessel.go
@@ -107,9 +107,19 @@ go run example/basic_vessel.go
 
 The first time you run this, it will ask you to log in.
 
-You have to scan the QR code that appears in your terminal
-using WhatsApp on your second phone/other device
-Go to: WhatsApp > Linked Devices > Link a Device
+Login method: [1] QR Code [2] Pairing Code: 
+Option 1: QR Code
+
+You have to scan the QR code that appears in your terminal using WhatsApp on your second phone/other device. Go to:
+WhatsApp > Linked Devices > Link a Device
+
+Option 2: Pairing Code
+Enter your phone number with country code, e.g. 628123456789.
+No +, spaces, or - allowed.
+
+The terminal will show an 8-digit code. On your phone, go to:
+WhatsApp > Linked Devices > Link with phone number instead
+Then enter the code.
 
 Once connected, the terminal will show:
 
