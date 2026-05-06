@@ -49,6 +49,12 @@ This is that system.
 
 ---
 
+### Changelog v0.1.1
+- Fixed: Pairing code login 400 bad-request error
+- Fixed: QR code loop after successful login  
+- Added: Phone number sanitization for PairPhone
+- Docs: Updated HOW_TO_BUILD.md with pairing code guide
+
 ### 📝 Core Features
 
 **Vessel provides 3 core mechanisms for a healthy memory process:**
@@ -62,9 +68,14 @@ This is that system.
 
 The fastest way to get vessel running is through the working example.
 
-**Requirements:**
-- Go 1.25+ 
-- Termux: `pkg install golang git sqlite clang -y`
+### Requirements
+- Go 1.25 or higher
+- Termux on Android
+
+### Tested On  
+- Termux v0.118+ on Android 13
+- Go 1.26.2 android/arm64
+- whatsmeow v0.2.8
 
 **Setup:**
 ```bash
@@ -74,8 +85,12 @@ go mod tidy
 CGO_ENABLED=1 go run example/basic_vessel.go
 
 ```
+1. Run `go run example/basic_vessel.go`
+2. Choose `2` for pairing code login
+3. Enter phone: `628xxx` without + or spaces
+4. Input the 8-digit code in WhatsApp > Linked Devices
 
-Then follow the full guide: **[HOW_TO_BUILD.md](HOW_TO_BUILD.md)**
+Then follow the full guide: HOW_TO_BUILD.md
 
 It covers everything from setting up your API key to writing your persona file to running the vessel for the first time.
 
@@ -102,7 +117,7 @@ vessel.go/
 | Component | Technology | Description |
 | --- | --- | --- |
 | **Language** | `Go 1.25+` | Core app logic with concurrency via Goroutines |
-| **Messaging** | `whatsmeow` | WhatsApp Web API client library |
+| **Messaging** | `whatsmeow` | WhatsApp Web API client with QR & Pairing Code auth |
 | **LLM** | `Groq API` | Language model for generating responses |
 | **TTS** | `MiniMax API` | Optional text-to-speech for voice notes (coming soon) |
 | **Persona** | `persona/system_prompt.txt` | User-defined system prompt for the vessel's personality |
@@ -123,7 +138,7 @@ vessel.go/
 
 ### 🗺️ Roadmap
 
-- [x] Working WhatsApp connection via whatsmeow
+- [x] Working WhatsApp connection via whatsmeow with QR + Pairing Code
 - [x] Groq LLM integration
 - [x] Typing simulation - vessel pauses before replying
 - [x] Mood-aware replies - short when heavy, longer when light
