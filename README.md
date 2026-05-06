@@ -90,7 +90,7 @@ CGO_ENABLED=1 go run example/basic_vessel.go
 3. Enter phone: `628xxx` without + or spaces
 4. Input the 8-digit code in WhatsApp > Linked Devices
 
-Then follow the full guide: HOW_TO_BUILD.md
+Then follow the full guide: [HOW_TO_BUILD.md](./HOW_TO_BUILD.md)
 
 It covers everything from setting up your API key to writing your persona file to running the vessel for the first time.
 
