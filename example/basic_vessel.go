@@ -67,7 +67,7 @@ import (
 	"syscall"
 	"time"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 	"github.com/mdp/qrterminal/v3"
 	"go.mau.fi/whatsmeow"
 	waProto "go.mau.fi/whatsmeow/binary/proto"
@@ -182,18 +182,18 @@ func main() {
 
 	// Setup WhatsApp
 	dbLog := waLog.Stdout("Database", "ERROR", true)
-	clientLog := waLog.Stdout("Client", "ERROR", true)
+    clientLog := waLog.Stdout("Client", "ERROR", true)
 
-	container, err := sqlstore.New("sqlite3", "file:session.db?_foreign_keys=on", dbLog)
-	if err != nil {
-		panic(err)
-	}
+    container, err := sqlstore.New(context.Background(), "sqlite", "file:session.db?_pragma=foreign_keys(1)", dbLog)
+    if err != nil {
+        panic(err)
+    }
 
-	deviceStore, err := container.GetFirstDevice()
-	if err != nil {
-		panic(err)
-	}
-
+    deviceStore, err := container.GetFirstDevice(context.Background())
+    if err != nil {
+        panic(err)
+    }
+	
 	waClient = whatsmeow.NewClient(deviceStore, clientLog)
 	waClient.AddEventHandler(func(evt interface{}) {
 		switch v := evt.(type) {
@@ -205,23 +205,50 @@ func main() {
 	// Login
     if waClient.Store.ID == nil {
         fmt.Println("\n⚓ No session found. Let's connect the vessel.")
-        qrChan, _ := waClient.GetQRChannel(context.Background())
-        if err := waClient.Connect(); err != nil {
-            panic(err)
-        }
-        for evt := range qrChan {
-            if evt.Event == "code" {
-                qrterminal.GenerateHalfBlock(evt.Code, qrterminal.L, os.Stdout)
-                fmt.Println("Scan the QR code with WhatsApp → Linked Devices")
-            } else {
-                fmt.Println("Login event:", evt.Event)
+        fmt.Print("\nLogin method: [1] QR Code [2] Pairing Code: ")
+
+        reader := bufio.NewReader(os.Stdin)
+        choice, _ := reader.ReadString('\n')
+        choice = strings.TrimSpace(choice)
+
+        if choice == "2" {
+            fmt.Print("Phone number with country code (e.g. 628123456789): ")
+            phone, _ := reader.ReadString('\n')
+            phone = strings.TrimSpace(phone)
+			phone = strings.ReplaceAll(phone, "+", "")
+            phone = strings.ReplaceAll(phone, " ", "")
+            phone = strings.ReplaceAll(phone, "-", "")
+
+            if err := waClient.Connect(); err!= nil {
+                 panic(err)
+            }
+            code, err := waClient.PairPhone(context.Background(), phone, true, whatsmeow.PairClientChrome, "Chrome (Linux)")
+            if err!= nil {
+                panic(err)
+            }
+            fmt.Printf("\n🔑 Pairing Code: %s\n\n", code)
+            fmt.Println("On your phone: WhatsApp → Settings → Linked Devices → Link with phone number instead")
+        } else {
+            qrChan, _ := waClient.GetQRChannel(context.Background())
+            if err := waClient.Connect(); err!= nil {
+                panic(err)
+            }
+            for evt := range qrChan {
+                if evt.Event == "code" {
+                    qrterminal.GenerateHalfBlock(evt.Code, qrterminal.L, os.Stdout)
+                    fmt.Println("Scan the QR code above with WhatsApp → Linked Devices")
+				} else if evt.Event == "success" {
+                    fmt.Println("Login success!")
+                    break
+                } else {
+                    fmt.Println("Login event:", evt.Event)
+                }
             }
         }
-    }
-	} else {
-		if err := waClient.Connect(); err != nil {
-			panic(err)
-		}
+    } else {
+        if err := waClient.Connect(); err!= nil {
+            panic(err)
+        }
 		fmt.Println("\n⛵ The vessel is afloat.")
 		fmt.Printf("   Listening for: %s\n", os.Getenv("VESSEL_USER_JID"))
 		fmt.Println("   Listening. Waiting. Here.")
