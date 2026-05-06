@@ -10,13 +10,24 @@ you can build this.
 
 ## WHAT YOU NEED BEFORE STARTING
 
-- Go 1.22 or later installed on your machine
+- Go 1.25 or later installed on your machine
 - A Groq API key (free at https://console.groq.com)
 - A second WhatsApp number for the vessel to run on
   (an old phone, a second SIM, or a virtual number works fine)
 - About 30 minutes
 
 ---
+## Before You Start - whatsmeow Setup
+
+vessel.go uses whatsmeow as its WhatsApp client.
+Due to how whatsmeow is distributed, you need to clone it
+separately before running go mod tidy.
+
+Run this first:
+
+    git clone https://github.com/tulir/whatsmeow.git ~/whatsmeow
+
+Then continue with the steps below.
 
 ## STEP 1 - GET THE CODE
 
