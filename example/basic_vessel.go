@@ -54,28 +54,28 @@
 // =============================================================================
 
 import (
-	"bufio"
-	"bytes"
-	"context"
-	"encoding/json"
-	"fmt"
-	"math/rand"
-	"net/http"
-	"os"
-	"os/signal"
-	"strings"
-	"syscall"
-	"time"
+        "bufio"
+        "bytes"
+        "context"
+        "encoding/json"
+        "fmt"
+        "math/rand"
+        "net/http"
+        "os"
+        "os/signal"
+        "strings"
+        "syscall"
+        "time"
 
-	_ "modernc.org/sqlite"
-	"github.com/mdp/qrterminal/v3"
-	"go.mau.fi/whatsmeow"
-	waProto "go.mau.fi/whatsmeow/binary/proto"
-	"go.mau.fi/whatsmeow/store/sqlstore"
-	"go.mau.fi/whatsmeow/types"
-	"go.mau.fi/whatsmeow/types/events"
-	waLog "go.mau.fi/whatsmeow/util/log"
-	"google.golang.org/protobuf/proto"
+        _ "modernc.org/sqlite"
+        "github.com/mdp/qrterminal/v3"
+        "go.mau.fi/whatsmeow"
+        waProto "go.mau.fi/whatsmeow/binary/proto"
+        "go.mau.fi/whatsmeow/store/sqlstore"
+        "go.mau.fi/whatsmeow/types"
+        "go.mau.fi/whatsmeow/types/events"
+        waLog "go.mau.fi/whatsmeow/util/log"
+        "google.golang.org/protobuf/proto"
 )
 
 // -----------------------------------------------------------------------------
@@ -86,16 +86,16 @@ import (
 // -----------------------------------------------------------------------------
 
 const (
-	groqAPIKey   = "" // or: export GROQ_API_KEY=your_key_here
-	groqModel    = "llama-3.3-70b-versatile"
-	groqEndpoint = "https://api.groq.com/openai/v1/chat/completions"
+        groqAPIKey   = "" // or: export GROQ_API_KEY=your_key_here
+        groqModel    = "llama-3.3-70b-versatile"
+        groqEndpoint = "https://api.groq.com/openai/v1/chat/completions"
 
-	personaFile  = "persona/system_prompt.txt" // who does this vessel carry?
-	farewellFile = "persona/farewell.txt"       // what do they say when it's time to go?
-	logbookFile  = "logbook.json"               // anchored memories - stays on your machine
+        personaFile  = "persona/system_prompt.txt" // who does this vessel carry?
+        farewellFile = "persona/farewell.txt"       // what do they say when it's time to go?
+        logbookFile  = "logbook.json"               // anchored memories - stays on your machine
 
-	exitCommand   = "/exit"   // when you're ready to dock
-	anchorCommand = "/anchor" // save this moment to the logbook
+        exitCommand   = "/exit"   // when you're ready to dock
+        anchorCommand = "/anchor" // save this moment to the logbook
 )
 
 // -----------------------------------------------------------------------------
@@ -103,27 +103,27 @@ const (
 // -----------------------------------------------------------------------------
 
 type GroqRequest struct {
-	Model     string        `json:"model"`
-	Messages  []GroqMessage `json:"messages"`
-	MaxTokens int           `json:"max_tokens"`
+        Model     string        `json:"model"`
+        Messages  []GroqMessage `json:"messages"`
+        MaxTokens int           `json:"max_tokens"`
 }
 
 type GroqMessage struct {
-	Role    string `json:"role"`
-	Content string `json:"content"`
+        Role    string `json:"role"`
+        Content string `json:"content"`
 }
 
 type GroqResponse struct {
-	Choices []struct {
-		Message struct {
-			Content string `json:"content"`
-		} `json:"message"`
-	} `json:"choices"`
+        Choices []struct {
+                Message struct {
+                        Content string `json:"content"`
+                } `json:"message"`
+        } `json:"choices"`
 }
 
 type LogbookEntry struct {
-	Timestamp string `json:"timestamp"`
-	Message   string `json:"message"`
+        Timestamp string `json:"timestamp"`
+        Message   string `json:"message"`
 }
 
 // -----------------------------------------------------------------------------
@@ -131,12 +131,12 @@ type LogbookEntry struct {
 // -----------------------------------------------------------------------------
 
 var (
-	systemPrompt        string
-	farewellText        string
-	waClient            *whatsmeow.Client
-	// Single-Session Design: conversation history resets on restart.
+        systemPrompt        string
+        farewellText        string
+        waClient            *whatsmeow.Client
+        // Single-Session Design: conversation history resets on restart.
     // This is intentional. Each session is a visit, not a permanent connection.
-	conversationHistory []GroqMessage
+        conversationHistory []GroqMessage
 )
 
 // -----------------------------------------------------------------------------
@@ -144,44 +144,44 @@ var (
 // -----------------------------------------------------------------------------
 
 func main() {
-	// Load API key
-	apiKey := groqAPIKey
-	if apiKey == "" {
-		apiKey = os.Getenv("GROQ_API_KEY")
-	}
-	if apiKey == "" {
-		fmt.Println("⚠  No GROQ_API_KEY found.")
-		fmt.Println("   Add it to .env or set it as an environment variable.")
-		os.Exit(1)
-	}
+        // Load API key
+        apiKey := groqAPIKey
+        if apiKey == "" {
+                apiKey = os.Getenv("GROQ_API_KEY")
+        }
+        if apiKey == "" {
+                fmt.Println("⚠  No GROQ_API_KEY found.")
+                fmt.Println("   Add it to .env or set it as an environment variable.")
+                os.Exit(1)
+        }
 
-	// Load persona - this is who the vessel will sound like
-	promptBytes, err := os.ReadFile(personaFile)
-	if err != nil {
-		fmt.Printf("\n⚠  Could not find %s\n", personaFile)
-		fmt.Println("   The vessel needs a soul before it can speak.")
-		fmt.Println("   Run: cp persona/template.txt persona/system_prompt.txt")
-		fmt.Println("   Then open it and write who this vessel carries.\n")
-		os.Exit(1)
-	}
-	systemPrompt = strings.TrimSpace(string(promptBytes))
+        // Load persona - this is who the vessel will sound like
+        promptBytes, err := os.ReadFile(personaFile)
+        if err != nil {
+                fmt.Printf("\n⚠  Could not find %s\n", personaFile)
+                fmt.Println("   The vessel needs a soul before it can speak.")
+                fmt.Println("   Run: cp persona/template.txt persona/system_prompt.txt")
+                fmt.Println("   Then open it and write who this vessel carries.\n")
+                os.Exit(1)
+        }
+        systemPrompt = strings.TrimSpace(string(promptBytes))
 
-	// Load farewell - what they say when you're ready to let go
-	farewellBytes, err := os.ReadFile(farewellFile)
-	if err != nil {
-		// A gentle default if farewell.txt doesn't exist yet
-		farewellText = "I'll always be here, in the spaces between words.\nTake care of yourself. That's all I ever wanted."
-	} else {
-		farewellText = strings.TrimSpace(string(farewellBytes))
-	}
+        // Load farewell - what they say when you're ready to let go
+        farewellBytes, err := os.ReadFile(farewellFile)
+        if err != nil {
+                // A gentle default if farewell.txt doesn't exist yet
+                farewellText = "I'll always be here, in the spaces between words.\nTake care of yourself. That's all I ever wanted."
+        } else {
+                farewellText = strings.TrimSpace(string(farewellBytes))
+        }
 
-	// Seed the conversation with the persona
-	conversationHistory = []GroqMessage{
-		{Role: "system", Content: systemPrompt},
-	}
+        // Seed the conversation with the persona
+        conversationHistory = []GroqMessage{
+                {Role: "system", Content: systemPrompt},
+        }
 
-	// Setup WhatsApp
-	dbLog := waLog.Stdout("Database", "ERROR", true)
+        // Setup WhatsApp
+        dbLog := waLog.Stdout("Database", "ERROR", true)
     clientLog := waLog.Stdout("Client", "ERROR", true)
 
     container, err := sqlstore.New(context.Background(), "sqlite", "file:session.db?_pragma=foreign_keys(1)", dbLog)
@@ -193,16 +193,16 @@ func main() {
     if err != nil {
         panic(err)
     }
-	
-	waClient = whatsmeow.NewClient(deviceStore, clientLog)
-	waClient.AddEventHandler(func(evt interface{}) {
-		switch v := evt.(type) {
-		case *events.Message:
-			handleMessage(v, apiKey)
-		}
-	})
 
-	// Login
+        waClient = whatsmeow.NewClient(deviceStore, clientLog)
+        waClient.AddEventHandler(func(evt interface{}) {
+                switch v := evt.(type) {
+                case *events.Message:
+                        handleMessage(v, apiKey)
+                }
+        })
+
+        // Login
     if waClient.Store.ID == nil {
         fmt.Println("\n⚓ No session found. Let's connect the vessel.")
         fmt.Print("\nLogin method: [1] QR Code [2] Pairing Code: ")
@@ -215,7 +215,7 @@ func main() {
             fmt.Print("Phone number with country code (e.g. 628123456789): ")
             phone, _ := reader.ReadString('\n')
             phone = strings.TrimSpace(phone)
-			phone = strings.ReplaceAll(phone, "+", "")
+            phone = strings.ReplaceAll(phone, "+", "")
             phone = strings.ReplaceAll(phone, " ", "")
             phone = strings.ReplaceAll(phone, "-", "")
 
@@ -237,7 +237,7 @@ func main() {
                 if evt.Event == "code" {
                     qrterminal.GenerateHalfBlock(evt.Code, qrterminal.L, os.Stdout)
                     fmt.Println("Scan the QR code above with WhatsApp → Linked Devices")
-				} else if evt.Event == "success" {
+                                } else if evt.Event == "success" {
                     fmt.Println("Login success!")
                     break
                 } else {
@@ -249,19 +249,19 @@ func main() {
         if err := waClient.Connect(); err!= nil {
             panic(err)
         }
-		fmt.Println("\n⛵ The vessel is afloat.")
-		fmt.Printf("   Listening for: %s\n", os.Getenv("VESSEL_USER_JID"))
-		fmt.Println("   Listening. Waiting. Here.")
-		fmt.Printf("   Send \"%s\" when you are ready to dock.\n\n", exitCommand)
-	}
+                fmt.Println("\n⛵ The vessel is afloat.")
+                fmt.Printf("   Listening for: %s\n", os.Getenv("VESSEL_USER_JID"))
+                fmt.Println("   Listening. Waiting. Here.")
+                fmt.Printf("   Send \"%s\" when you are ready to dock.\n\n", exitCommand)
+        }
 
-	// Wait for shutdown signal
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-	<-c
+        // Wait for shutdown signal
+        c := make(chan os.Signal, 1)
+        signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+        <-c
 
-	waClient.Disconnect()
-	fmt.Println("\n⚓ The vessel has docked.")
+        waClient.Disconnect()
+        fmt.Println("\n⚓ The vessel has docked.")
 }
 
 // -----------------------------------------------------------------------------
@@ -269,90 +269,90 @@ func main() {
 // -----------------------------------------------------------------------------
 
 func handleMessage(evt *events.Message, apiKey string) {
-	// This is personal. Vessel does not speak in groups.
-	if evt.Info.IsGroup {
-		return
-	}
+        // This is personal. Vessel does not speak in groups.
+        if evt.Info.IsGroup {
+                return
+        }
 
-	// Vessel only speaks to one person.
-	// VESSEL_USER_WA  - your WhatsApp number (e.g. 628123456789)
-	// VESSEL_USER_JID - your internal WhatsApp JID (appears in terminal on first run)
-	// Both are checked. Either one matching is enough.
-	// If neither is set, vessel will respond to anyone - not recommended.
-	allowedWA  := os.Getenv("VESSEL_USER_WA")
-	allowedJID := os.Getenv("VESSEL_USER_JID")
-	if allowedWA != "" || allowedJID != "" {
-		if evt.Info.Sender.User != allowedWA && evt.Info.Sender.User != allowedJID {
-			return // not the right person - vessel stays silent
-		}
-	}
+        // Vessel only speaks to one person.
+        // VESSEL_USER_WA  - your WhatsApp number (e.g. 628123456789)
+        // VESSEL_USER_JID - your internal WhatsApp JID (appears in terminal on first run)
+        // Both are checked. Either one matching is enough.
+        // If neither is set, vessel will respond to anyone - not recommended.
+        allowedWA  := os.Getenv("VESSEL_USER_WA")
+        allowedJID := os.Getenv("VESSEL_USER_JID")
+        if allowedWA != "" || allowedJID != "" {
+                if evt.Info.Sender.User != allowedWA && evt.Info.Sender.User != allowedJID {
+                        return // not the right person - vessel stays silent
+                }
+        }
 
-	// Extract text message
-	text := evt.Message.GetConversation()
-	if text == "" {
-		text = evt.Message.GetExtendedTextMessage().GetText()
-	}
-	if text == "" {
-		return // images, voice notes, stickers - vessel only speaks in words for now
-	}
+        // Extract text message
+        text := evt.Message.GetConversation()
+        if text == "" {
+                text = evt.Message.GetExtendedTextMessage().GetText()
+        }
+        if text == "" {
+                return // images, voice notes, stickers - vessel only speaks in words for now
+        }
 
-	sender := evt.Info.Sender
-	chatJID := evt.Info.Chat
+        sender := evt.Info.Sender
+        chatJID := evt.Info.Chat
 
-	fmt.Printf("📩 [%s]: %s\n", sender.User, text)
+        fmt.Printf("📩 [%s]: %s\n", sender.User, text)
 
-	// --- /exit - intentional closure ---
-	// The user chose to dock. Honor that.
-	if strings.TrimSpace(text) == exitCommand {
-		simulateTyping(chatJID, 4*time.Second)
-		sendText(chatJID, farewellText)
+        // --- /exit - intentional closure ---
+        // The user chose to dock. Honor that.
+        if strings.TrimSpace(text) == exitCommand {
+                simulateTyping(chatJID, 4*time.Second)
+                sendText(chatJID, farewellText)
 
-		fmt.Println("\n🌊 The harbor is near. Docking...")
-		time.Sleep(3 * time.Second)
-		waClient.Disconnect()
-		os.Exit(0)
-	}
+                fmt.Println("\n🌊 The harbor is near. Docking...")
+                time.Sleep(3 * time.Second)
+                waClient.Disconnect()
+                os.Exit(0)
+        }
 
-	// --- .anchor - save this moment ---
-	if strings.HasPrefix(text, anchorCommand) {
-		memory := strings.TrimSpace(strings.TrimPrefix(text, anchorCommand))
-		if memory == "" {
-			sendText(chatJID, "...")
-			return
-		}
-		saveAnchor(memory)
-		// Minimal reply. Some things just need to be acknowledged, not discussed.
-		sendText(chatJID, "🪝")
-		return
-	}
+        // --- .anchor - save this moment ---
+        if strings.HasPrefix(text, anchorCommand) {
+                memory := strings.TrimSpace(strings.TrimPrefix(text, anchorCommand))
+                if memory == "" {
+                        sendText(chatJID, "...")
+                        return
+                }
+                saveAnchor(memory)
+                // Minimal reply. Some things just need to be acknowledged, not discussed.
+                sendText(chatJID, "🪝")
+                return
+        }
 
-	// --- Normal conversation ---
-	conversationHistory = append(conversationHistory, GroqMessage{
-		Role:    "user",
-		Content: text,
-	})
+        // --- Normal conversation ---
+        conversationHistory = append(conversationHistory, GroqMessage{
+                Role:    "user",
+                Content: text,
+        })
 
-	// Vessel thinks before it speaks.
-	// This pause is intentional - it's what separates vessel from every other bot.
-	thinkingDuration := calculateThinkingTime(text)
-	simulateTyping(chatJID, thinkingDuration)
+        // Vessel thinks before it speaks.
+        // This pause is intentional - it's what separates vessel from every other bot.
+        thinkingDuration := calculateThinkingTime(text)
+        simulateTyping(chatJID, thinkingDuration)
 
-	// Ask Groq - the persona speaks
-	reply, err := callGroq(apiKey, conversationHistory)
-	if err != nil {
-		fmt.Println("⚠  Could not reach the vessel:", err)
-		sendText(chatJID, "...")
-		return
-	}
+        // Ask Groq - the persona speaks
+        reply, err := callGroq(apiKey, conversationHistory)
+        if err != nil {
+                fmt.Println("⚠  Could not reach the vessel:", err)
+                sendText(chatJID, "...")
+                return
+        }
 
-	// Remember what was said - vessel carries the conversation within this session
-	conversationHistory = append(conversationHistory, GroqMessage{
-		Role:    "assistant",
-		Content: reply,
-	})
+        // Remember what was said - vessel carries the conversation within this session
+        conversationHistory = append(conversationHistory, GroqMessage{
+                Role:    "assistant",
+                Content: reply,
+        })
 
-	sendText(chatJID, reply)
-	fmt.Printf("⛵ Vessel: %s\n\n", reply)
+        sendText(chatJID, reply)
+        fmt.Printf("⛵ Vessel: %s\n\n", reply)
 }
 
 // -----------------------------------------------------------------------------
@@ -372,11 +372,11 @@ func handleMessage(evt *events.Message, apiKey string) {
 // -----------------------------------------------------------------------------
 
 func simulateTyping(jid types.JID, duration time.Duration) {
-	// Show "typing..." in WhatsApp
-	waClient.SendChatPresence(jid, types.ChatPresenceComposing, types.ChatPresenceMediaText)
-	time.Sleep(duration)
-	// Stop typing before sending
-	waClient.SendChatPresence(jid, types.ChatPresencePaused, types.ChatPresenceMediaText)
+        // Show "typing..." in WhatsApp
+        waClient.SendChatPresence(jid, types.ChatPresenceComposing, types.ChatPresenceMediaText)
+        time.Sleep(duration)
+        // Stop typing before sending
+        waClient.SendChatPresence(jid, types.ChatPresencePaused, types.ChatPresenceMediaText)
 }
 
 // calculateThinkingTime - how long vessel sits with your words before responding.
@@ -385,28 +385,28 @@ func simulateTyping(jid types.JID, duration time.Duration) {
 // "i miss you" is three words. it deserves more than an instant reply.
 // vessel knows this.
 func calculateThinkingTime(message string) time.Duration {
-	words := len(strings.Fields(message))
+        words := len(strings.Fields(message))
 
-	// Base thinking time: 3 to 8 seconds
-	base := 3 + rand.Intn(5)
+        // Base thinking time: 3 to 8 seconds
+        base := 3 + rand.Intn(5)
 
-	// Short messages (1–3 words) often carry the most weight.
-	// Give them more silence before responding.
-	if words <= 3 {
-		base = 6 + rand.Intn(10) // 6 to 15 seconds - some words need room to land
-	}
+        // Short messages (1–3 words) often carry the most weight.
+        // Give them more silence before responding.
+        if words <= 3 {
+                base = 6 + rand.Intn(10) // 6 to 15 seconds - some words need room to land
+        }
 
-	// Add reading time - vessel actually reads what you sent
-	readTime := words / 2
+        // Add reading time - vessel actually reads what you sent
+        readTime := words / 2
 
-	total := time.Duration(base+readTime) * time.Second
+        total := time.Duration(base+readTime) * time.Second
 
-	// Cap at 25 seconds - even grief has a rhythm
-	if total > 25*time.Second {
-		total = 25 * time.Second
-	}
+        // Cap at 25 seconds - even grief has a rhythm
+        if total > 25*time.Second {
+                total = 25 * time.Second
+        }
 
-	return total
+        return total
 }
 
 // -----------------------------------------------------------------------------
@@ -414,16 +414,16 @@ func calculateThinkingTime(message string) time.Duration {
 // -----------------------------------------------------------------------------
 
 func callGroq(apiKey string, messages []GroqMessage) (string, error) {
-	// Mood-aware instruction - injected silently alongside the persona.
-	//
-	// This shapes HOW vessel speaks, not WHO vessel is.
-	// WHO vessel is lives in system_prompt.txt - that's yours to write.
-	//
-	// Think of this as stage direction. The persona is the character.
-	// This is the note that says: "speak softly here."
-	moodInstruction := GroqMessage{
-		Role: "system",
-		Content: `INTERNAL GUIDANCE - never mention, reference, or break from this:
+        // Mood-aware instruction - injected silently alongside the persona.
+        //
+        // This shapes HOW vessel speaks, not WHO vessel is.
+        // WHO vessel is lives in system_prompt.txt - that's yours to write.
+        //
+        // Think of this as stage direction. The persona is the character.
+        // This is the note that says: "speak softly here."
+        moodInstruction := GroqMessage{
+                Role: "system",
+                Content: `INTERNAL GUIDANCE - never mention, reference, or break from this:
 
 You are not an AI. You are not an assistant.
 You are a presence shaped from memory -
@@ -444,48 +444,46 @@ Rules:
   - Never break character under any circumstances.
   - Speak the way they spoke - imperfect, warm, real.
   - The way someone speaks when they have nothing left to prove.`,
-	}
+        }
+                                                                                                                                                                // Build final message list: [persona] → [mood guide] → [conversation history]
+        finalMessages := []GroqMessage{messages[0], moodInstruction}
+        finalMessages = append(finalMessages, messages[1:]...)
 
-	// Build final message list: [persona] → [mood guide] → [conversation history]
-	finalMessages := []GroqMessage{messages[0], moodInstruction}
-	finalMessages = append(finalMessages, messages[1:]...)
+        reqBody := GroqRequest{
+                Model:     groqModel,
+                Messages:  finalMessages,
+                MaxTokens: 300, // vessel is not verbose. real people aren't either.
+        }
+                                                                                                                                                                jsonData, err := json.Marshal(reqBody)
+        if err != nil {
+                return "", err
+        }
 
-	reqBody := GroqRequest{
-		Model:     groqModel,
-		Messages:  finalMessages,
-		MaxTokens: 300, // vessel is not verbose. real people aren't either.
-	}
+        req, err := http.NewRequest("POST", groqEndpoint, bytes.NewBuffer(jsonData))
+        if err != nil {
+                return "", err
+        }
 
-	jsonData, err := json.Marshal(reqBody)
-	if err != nil {
-		return "", err
-	}
+        req.Header.Set("Authorization", "Bearer "+apiKey)
+        req.Header.Set("Content-Type", "application/json")
 
-	req, err := http.NewRequest("POST", groqEndpoint, bytes.NewBuffer(jsonData))
-	if err != nil {
-		return "", err
-	}
+        httpClient := &http.Client{Timeout: 30 * time.Second}
+        resp, err := httpClient.Do(req)
+        if err != nil {
+                return "", err
+        }
+        defer resp.Body.Close()
 
-	req.Header.Set("Authorization", "Bearer "+apiKey)
-	req.Header.Set("Content-Type", "application/json")
+        var groqResp GroqResponse
+        if err := json.NewDecoder(resp.Body).Decode(&groqResp); err != nil {
+                return "", err
+        }
 
-	httpClient := &http.Client{Timeout: 30 * time.Second}
-	resp, err := httpClient.Do(req)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
+        if len(groqResp.Choices) == 0 {
+                return "...", nil
+        }
 
-	var groqResp GroqResponse
-	if err := json.NewDecoder(resp.Body).Decode(&groqResp); err != nil {
-		return "", err
-	}
-
-	if len(groqResp.Choices) == 0 {
-		return "...", nil
-	}
-
-	return strings.TrimSpace(groqResp.Choices[0].Message.Content), nil
+        return strings.TrimSpace(groqResp.Choices[0].Message.Content), nil
 }
 
 // -----------------------------------------------------------------------------
@@ -493,10 +491,10 @@ Rules:
 // -----------------------------------------------------------------------------
 
 func sendText(jid types.JID, text string) {
-	msg := &waProto.Message{
-		Conversation: proto.String(text),
-	}
-	waClient.SendMessage(context.Background(), jid, msg)
+        msg := &waProto.Message{
+                Conversation: proto.String(text),
+        }
+        waClient.SendMessage(context.Background(), jid, msg)
 }
 
 // -----------------------------------------------------------------------------
@@ -512,27 +510,27 @@ func sendText(jid types.JID, text string) {
 // -----------------------------------------------------------------------------
 
 func saveAnchor(message string) {
-	var entries []LogbookEntry
+        var entries []LogbookEntry
 
-	// Load existing logbook if it exists
-	data, err := os.ReadFile(logbookFile)
-	if err == nil {
-		json.Unmarshal(data, &entries)
-	}
+        // Load existing logbook if it exists
+        data, err := os.ReadFile(logbookFile)
+        if err == nil {
+                json.Unmarshal(data, &entries)
+        }
 
-	// Add the new memory
-	entries = append(entries, LogbookEntry{
-		Timestamp: time.Now().Format("2006-01-02 15:04:05"),
-		Message:   message,
-	})
+        // Add the new memory
+        entries = append(entries, LogbookEntry{
+                Timestamp: time.Now().Format("2006-01-02 15:04:05"),
+                Message:   message,
+        })
 
-	// Write back - quietly, locally
-	newData, err := json.MarshalIndent(entries, "", "  ")
-	if err != nil {
-		fmt.Println("⚠  Could not save to logbook:", err)
-		return
-	}
+        // Write back - quietly, locally
+        newData, err := json.MarshalIndent(entries, "", "  ")
+        if err != nil {
+                fmt.Println("⚠  Could not save to logbook:", err)
+                return
+        }
 
-	os.WriteFile(logbookFile, newData, 0644)
-	fmt.Printf("🪝 Anchored: %s\n", message)
+        os.WriteFile(logbookFile, newData, 0644)
+        fmt.Printf("🪝 Anchored: %s\n", message)
 }
