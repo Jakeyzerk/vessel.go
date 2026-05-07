@@ -37,3 +37,6 @@ persona/farewell.txt
 session.db
 logbook.json
 config.yaml
+vessel
+vessel.db
+session.db
