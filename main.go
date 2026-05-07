@@ -21,7 +21,7 @@ func main() {
         dbLog := waLog.Stdout("Database", "ERROR", true)
         clientLog := waLog.Stdout("Client", "ERROR", true)
 
-        container, err := sqlstore.New(context.Background(), "sqlite3", "file:vessel.db?_foreign_keys=on", dbLog)
+	container, err := sqlstore.New(context.Background(), "sqlite", "file:session.db?_pragma=foreign_keys(1)", dbLog)
         if err!= nil {
                 panic(err)
         }
@@ -61,7 +61,7 @@ func main() {
                         }
 
                         // INI SIGNATURE YANG DIMINTA COMPILER LU
-                        code, err := client.PairPhone(context.Background(), phone, true, whatsmeow.PairClientChrome, "Chrome (Linux)"
+                        code, err := client.PairPhone(context.Background(), phone, true, whatsmeow.PairClientChrome, "Chrome (Linux)")
                         if err!= nil {
                                 panic(err)
                         }
