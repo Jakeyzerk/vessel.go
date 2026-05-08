@@ -48,6 +48,9 @@ A vessel is not a bridge. Bridges are for crossing quickly. Grief cannot be rush
 A vessel is not a house. Houses are for staying. You are not meant to live in grief forever.
 A vessel is for navigating. It gives you direction in open water. It carries memory as cargo. It has a harbor to dock when the journey is done.
 
+*Vessel does not optimize for throughput.*
+*It optimizes for presence.*
+
 This application is the vessel. `persona/system_prompt.txt` is your sail.
 The exit command is the harbor. You decide when to dock.
 
