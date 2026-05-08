@@ -57,7 +57,7 @@ This is that system.
 
 ---
 
-### Changelog v0.1.1
+#### Changelog v0.1.1
 - Fixed: Pairing code login 400 bad-request error
 - Fixed: QR code loop after successful login  
 - Added: Phone number sanitization for PairPhone
@@ -117,7 +117,7 @@ vessel.go/
 ```
 
 ---
-## 🧭 Architecture
+### 🧭 Architecture
 
 ```mermaid
 graph TD
