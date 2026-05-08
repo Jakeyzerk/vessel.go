@@ -2,12 +2,22 @@
   <img src="assets/banner.png" alt="vessel.go" width="100%"/>
 </p>
 <p align="center">
-  <img src="https://img.shields.io/github/v/release/Jakeyzerk/vessel.go" alt="Release"/>
-  <img src="https://img.shields.io/badge/Go-1.25+-00ADD8?style=flat&logo=go" alt="Go Version"/>
-  <img src="https://img.shields.io/github/license/Jakeyzerk/vessel.go" alt="License"/>
-  <img src="https://img.shields.io/badge/CGO-free-success" alt="CGO Free"/>
+  <a href="https://github.com/Jakeyzerk/vessel.go/releases/tag/v0.1.1">
+    <img src="https://img.shields.io/github/v/release/Jakeyzerk/vessel.go" alt="Release"/>
+  </a>
+  <a href="https://go.dev/">
+    <img src="https://img.shields.io/badge/Go-1.25+-00ADD8?style=flat&logo=go" alt="Go Version"/>
+  </a>
+  <a href="https://github.com/Jakeyzerk/vessel.go?tab=MIT-1-ov-file">
+    <img src="https://img.shields.io/github/license/Jakeyzerk/vessel.go" alt="License"/>
+  </a>
+  <a href="https://pkg.go.dev/modernc.org/sqlite">
+    <img src="https://img.shields.io/badge/CGO-free-success" alt="CGO Free"/>
+  </a>
   <img src="https://img.shields.io/badge/platform-Android%20%7C%20Linux%20%7C%20macOS-lightgrey" alt="Platform"/>
-  <img src="https://img.shields.io/github/last-commit/Jakeyzerk/vessel.go" alt="Last Commit"/>
+  <a href="https://github.com/Jakeyzerk/vessel.go/commits/main">
+    <img src="https://img.shields.io/github/last-commit/Jakeyzerk/vessel.go" alt="Last Commit"/>
+  </a>
 </p>
 
 # vessel.go ⛵
