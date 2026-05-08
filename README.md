@@ -151,6 +151,9 @@ vessel.go/
 - [x] `/anchor` command - save moments to logbook.json
 - [x] `/exit` farewell and intentional shutdown
 - [x] Persona template with narrative examples
+- [x] Migrated to modernc sqlite - CGO-free, runs on Android/Termux
+- [x] Dual identity filter - VESSEL_USER_WA and VESSEL_USER_JID
+- [x] `/anchor` command standardized to slash prefix
 - [ ] MiniMax TTS - vessel sends voice notes
 - [ ] Persistent memory across sessions
 - [ ] `config.yaml` for easier configuration
