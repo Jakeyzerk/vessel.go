@@ -1,6 +1,14 @@
 <p align="center">
   <img src="assets/banner.png" alt="vessel.go" width="100%"/>
 </p>
+<p align="center">
+  <img src="https://img.shields.io/github/v/release/Jakeyzerk/vessel.go" alt="Release"/>
+  <img src="https://img.shields.io/badge/Go-1.25+-00ADD8?style=flat&logo=go" alt="Go Version"/>
+  <img src="https://img.shields.io/github/license/Jakeyzerk/vessel.go" alt="License"/>
+  <img src="https://img.shields.io/badge/CGO-free-success" alt="CGO Free"/>
+  <img src="https://img.shields.io/badge/platform-Android%20%7C%20Linux%20%7C%20macOS-lightgrey" alt="Platform"/>
+  <img src="https://img.shields.io/github/last-commit/Jakeyzerk/vessel.go" alt="Last Commit"/>
+</p>
 
 # vessel.go ⛵
 
