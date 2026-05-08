@@ -144,10 +144,6 @@ graph TD
 
     Brain -- Response --> WA
 
-    style Brain fill:#1a1a2e,stroke:#e94560,color:#fff
-    style Handler fill:#16213e,stroke:#0f3460,color:#fff
-    style WA fill:#0d1b2a,stroke:#25D366,color:#fff
-    style TTS fill:#2d1b33,stroke:#9b59b6,color:#aaa
     style Log fill:#1a2a1a,stroke:#27ae60,color:#fff
     style Farewell fill:#2a1a1a,stroke:#e74c3c,color:#fff
 ```
