@@ -117,18 +117,40 @@ vessel.go/
 ```
 
 ---
+## 🧭 Architecture
 
-### 🛠️ Technical Architecture
+```mermaid
+graph TD
+    User((User)) -- WhatsApp Message --> WA[WhatsApp Client / whatsmeow]
+    WA -- Trigger Event --> Handler{Message Handler}
 
-| Component | Technology | Description |
-| --- | --- | --- |
-| **Language** | `Go 1.25+` | Core app logic with concurrency via Goroutines |
-| **Messaging** | `whatsmeow` | WhatsApp Web API client with QR & Pairing Code auth |
-| **LLM** | `Groq API` | Language model for generating responses |
-| **TTS** | `MiniMax API` | Optional text-to-speech for voice notes (coming soon) |
-| **Persona** | `persona/system_prompt.txt` | User-defined system prompt for the vessel's personality |
-| **Memory** | `logbook.json` | Local file for anchored messages |
-| **Session** | `SQLite` | Local database for storing WhatsApp session |
+    subgraph "Vessel Core"
+        Handler -- /anchor --> Log[logbook.json]
+        Handler -- /exit --> Farewell[Farewell Logic]
+        Handler -- /return --> Memory[(session memory)]
+        Handler -- Chat --> Brain[Groq LLM Engine]
+    end
+
+    subgraph "Soul"
+        Brain -- Persona --> Prompt[system_prompt.txt]
+        Brain -- Mood --> Filter[Mood-Aware Instruction]
+        Brain -- Context --> History[Conversation History]
+    end
+
+    subgraph "Future"
+        Brain -- Text --> TTS[MiniMax TTS]
+        TTS -- Voice Note --> WA
+    end
+
+    Brain -- Response --> WA
+
+    style Brain fill:#1a1a2e,stroke:#e94560,color:#fff
+    style Handler fill:#16213e,stroke:#0f3460,color:#fff
+    style WA fill:#0d1b2a,stroke:#25D366,color:#fff
+    style TTS fill:#2d1b33,stroke:#9b59b6,color:#aaa
+    style Log fill:#1a2a1a,stroke:#27ae60,color:#fff
+    style Farewell fill:#2a1a1a,stroke:#e74c3c,color:#fff
+```
 
 ---
 
