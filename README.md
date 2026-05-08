@@ -165,21 +165,24 @@ graph TD
 
 ### 🗺️ Roadmap
 
-- [x] Working WhatsApp connection via whatsmeow with QR + Pairing Code
+- [x] Working WhatsApp connection via whatsmeow - QR and Pairing Code
 - [x] Groq LLM integration
 - [x] Typing simulation - vessel pauses before replying
 - [x] Mood-aware replies - short when heavy, longer when light
-- [x] `/anchor` command - save moments to logbook.json
-- [x] `/exit` farewell and intentional shutdown
+- [x] /anchor command - save moments to logbook.json
+- [x] /exit farewell and intentional shutdown
 - [x] Persona template with narrative examples
 - [x] Migrated to modernc sqlite - CGO-free, runs on Android/Termux
 - [x] Dual identity filter - VESSEL_USER_WA and VESSEL_USER_JID
-- [x] `/anchor` command standardized to slash prefix
+- [x] Slash prefix standardized - /anchor and /exit consistent
+- [ ] defer/recover in message handler - vessel stays alive on panic
+- [ ] context.WithTimeout for Groq API - prevent hanging on slow connections
+- [ ] Persistent memory across sessions via SQLite
+- [ ] /return command - vessel returns with logbook memory
+- [ ] Automated logbook.json backup
+- [ ] config.yaml for easier configuration
 - [ ] MiniMax TTS - vessel sends voice notes
-- [ ] Persistent memory across sessions
-- [ ] `config.yaml` for easier configuration
 - [ ] Advanced example with full feature set
-
 ---
 
 ### 🤝 Contributing
