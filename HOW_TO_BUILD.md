@@ -17,17 +17,15 @@ you can build this.
 - About 30 minutes
 
 ---
-## Before You Start - whatsmeow Setup
+## Before You Start - whatsmeow Fork
 
-vessel.go uses whatsmeow as its WhatsApp client.
-Due to how whatsmeow is distributed, you need to clone it
-separately before running go mod tidy.
+vessel.go uses a **custom fork** of whatsmeow, not the official upstream (`tulir/whatsmeow`).
 
-Run this first:
+The fork is maintained at:
+`github.com/Jakeyzerk/whatsmeow`
 
-    git clone https://github.com/tulir/whatsmeow.git ~/whatsmeow
-
-Then continue with the steps below.
+You do **not** need to clone it manually. The `go.mod` file handles this automatically
+via a `replace` directive. Running `go mod tidy` will pull the correct fork.
 
 ## STEP 1 - GET THE CODE
 
