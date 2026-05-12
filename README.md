@@ -185,13 +185,13 @@ graph TD
 - [x] Migrated to modernc sqlite - CGO-free, runs on Android/Termux
 - [x] Dual identity filter - VESSEL_USER_WA and VESSEL_USER_JID
 - [x] Slash prefix standardized - /anchor and /exit consistent
+- [x] Clarify whatsmeow fork in HOW_TO_BUILD.md
 - [ ] defer/recover in message handler - vessel stays alive on panic
 - [ ] context.WithTimeout for Groq API - prevent hanging on slow connections
 - [ ] /logbook command - view anchored memories from WhatsApp
 - [ ] Exponential backoff retry for Groq API
 - [ ] In-character error messages - vessel stays in persona on failure
 - [ ] zerolog structured logging
-- [ ] Clarify whatsmeow fork in HOW_TO_BUILD.md
 - [ ] Persistent memory across sessions via SQLite
 - [ ] /return command - vessel returns with logbook memory
 - [ ] Automated logbook.json backup
