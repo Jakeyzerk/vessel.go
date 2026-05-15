@@ -30,8 +30,8 @@ It is designed as a tool for personal remembrance and grief processing.
 This is not a finished product. It is a framework and a starting point.
 You bring the code to life. You define who it carries. You decide when to dock.
 
-> **Status: v0.1.0 - early stage**
-> Core example is working. More features are in progress.
+> **Status: v0.2.0-dev - active development**
+> Core example is working. v0.2.0 features in progress.
 > See [HOW_TO_BUILD.md](HOW_TO_BUILD.md) to get started.
 
 ---
@@ -185,10 +185,9 @@ graph TD
 - [x] Migrated to modernc sqlite - CGO-free, runs on Android/Termux
 - [x] Dual identity filter - VESSEL_USER_WA and VESSEL_USER_JID
 - [x] Slash prefix standardized - /anchor and /exit consistent
-- [x] Clarify whatsmeow fork in HOW_TO_BUILD.md
 - [x] defer/recover in message handler - vessel stays alive on panic
-- [x] In-character error messages - vessel stays in persona on failure
-- [x] Fix SendChatPresence context - whatsmeow API compatibility
+- [ ] Clarify whatsmeow fork in HOW_TO_BUILD.md
+- [ ] In-character error messages - vessel stays in persona on failure
 - [ ] context.WithTimeout for Groq API - prevent hanging on slow connections
 - [ ] /logbook command - view anchored memories from WhatsApp
 - [ ] Exponential backoff retry for Groq API
