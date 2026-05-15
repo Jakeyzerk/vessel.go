@@ -96,6 +96,11 @@ const (
 
         exitCommand   = "/exit"   // when you're ready to dock
         anchorCommand = "/anchor" // save this moment to the logbook
+
+	// LLM role constants
+	roleSystem    = "system"
+	roleUser      = "user"
+	roleAssistant = "assistant"
 )
 
 // -----------------------------------------------------------------------------
@@ -135,7 +140,7 @@ var (
         farewellText        string
         waClient            *whatsmeow.Client
         // Single-Session Design: conversation history resets on restart.
-    // This is intentional. Each session is a visit, not a permanent connection.
+	// This is intentional. Each session is a visit, not a permanent connection.
         conversationHistory []GroqMessage
 )
 
@@ -177,7 +182,7 @@ func main() {
 
         // Seed the conversation with the persona
         conversationHistory = []GroqMessage{
-                {Role: "system", Content: systemPrompt},
+                {Role: roleSystem, Content: systemPrompt},
         }
 
         // Setup WhatsApp
@@ -269,6 +274,13 @@ func main() {
 // -----------------------------------------------------------------------------
 
 func handleMessage(evt *events.Message, apiKey string) {
+	// Vessel stays alive even if something breaks.
+	// A panic in one message should never sink the whole vessel.
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Printf("⚠  recovered from panic: %v\n", r)
+		}
+	}()
         // This is personal. Vessel does not speak in groups.
         if evt.Info.IsGroup {
                 return
@@ -328,7 +340,7 @@ func handleMessage(evt *events.Message, apiKey string) {
 
         // --- Normal conversation ---
         conversationHistory = append(conversationHistory, GroqMessage{
-                Role:    "user",
+                Role:    roleUser,
                 Content: text,
         })
 
@@ -347,7 +359,7 @@ func handleMessage(evt *events.Message, apiKey string) {
 
         // Remember what was said - vessel carries the conversation within this session
         conversationHistory = append(conversationHistory, GroqMessage{
-                Role:    "assistant",
+                Role:    roleAssistant,
                 Content: reply,
         })
 
@@ -373,10 +385,10 @@ func handleMessage(evt *events.Message, apiKey string) {
 
 func simulateTyping(jid types.JID, duration time.Duration) {
         // Show "typing..." in WhatsApp
-        waClient.SendChatPresence(jid, types.ChatPresenceComposing, types.ChatPresenceMediaText)
-        time.Sleep(duration)
-        // Stop typing before sending
-        waClient.SendChatPresence(jid, types.ChatPresencePaused, types.ChatPresenceMediaText)
+	waClient.SendChatPresence(context.Background(), jid, types.ChatPresenceComposing, types.ChatPresenceMediaText)
+	time.Sleep(duration)
+	//stop typing before sending
+	waClient.SendChatPresence(context.Background(), jid, types.ChatPresencePaused, types.ChatPresenceMediaText)
 }
 
 // calculateThinkingTime - how long vessel sits with your words before responding.
