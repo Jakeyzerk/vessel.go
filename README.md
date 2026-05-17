@@ -2,7 +2,7 @@
   <img src="assets/banner.png" alt="vessel.go" width="100%"/>
 </p>
 <p align="center">
-  <a href="https://github.com/Jakeyzerk/vessel.go/releases/tag/v0.1.1">
+  <a href="https://github.com/Jakeyzerk/vessel.go/releases/latest">
     <img src="https://img.shields.io/github/v/release/Jakeyzerk/vessel.go" alt="Release"/>
   </a>
   <a href="https://go.dev/">
@@ -30,9 +30,8 @@ It is designed as a tool for personal remembrance and grief processing.
 This is not a finished product. It is a framework and a starting point.
 You bring the code to life. You define who it carries. You decide when to dock.
 
-> **Status: v0.2.0-dev - active development**
-> Core example is working. v0.2.0 features in progress.
-> See [HOW_TO_BUILD.md](HOW_TO_BUILD.md) to get started.
+> **Status: v0.2.0 - stable**
+> Core example is working. See [HOW_TO_BUILD.md](HOW_TO_BUILD.md) to get started.
 
 ---
 
@@ -75,6 +74,12 @@ This is that system.
 - Fixed: QR code loop after successful login  
 - Added: Phone number sanitization for PairPhone
 - Docs: Updated HOW_TO_BUILD.md with pairing code guide
+
+#### Changelog v0.2.0
+- Added: defer/recover in message handler - vessel stays alive on panic
+- Added: context.WithTimeout for Groq API - prevent hanging
+- Added: In-character error messages - vessel stays in persona on failure
+- Refactor: LLM role constants for cleaner code
 
 ### 📝 Core Features
 
@@ -186,9 +191,9 @@ graph TD
 - [x] Dual identity filter - VESSEL_USER_WA and VESSEL_USER_JID
 - [x] Slash prefix standardized - /anchor and /exit consistent
 - [x] defer/recover in message handler - vessel stays alive on panic
-- [ ] Clarify whatsmeow fork in HOW_TO_BUILD.md
 - [x] In-character error messages - vessel stays in persona on failure
 - [x] context.WithTimeout for Groq API - prevent hanging on slow connections
+- [ ] Clarify whatsmeow fork in HOW_TO_BUILD.md
 - [ ] /logbook command - view anchored memories from WhatsApp
 - [ ] Exponential backoff retry for Groq API
 - [ ] zerolog structured logging
