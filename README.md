@@ -187,8 +187,8 @@ graph TD
 - [x] Slash prefix standardized - /anchor and /exit consistent
 - [x] defer/recover in message handler - vessel stays alive on panic
 - [ ] Clarify whatsmeow fork in HOW_TO_BUILD.md
-- [ ] In-character error messages - vessel stays in persona on failure
-- [ ] context.WithTimeout for Groq API - prevent hanging on slow connections
+- [x] In-character error messages - vessel stays in persona on failure
+- [x] context.WithTimeout for Groq API - prevent hanging on slow connections
 - [ ] /logbook command - view anchored memories from WhatsApp
 - [ ] Exponential backoff retry for Groq API
 - [ ] zerolog structured logging
