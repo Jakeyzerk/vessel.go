@@ -191,6 +191,7 @@ graph TD
 - [x] Dual identity filter - VESSEL_USER_WA and VESSEL_USER_JID
 - [x] Slash prefix standardized - /anchor and /exit consistent
 - [x] defer/recover in message handler - vessel stays alive on panic
+- [x] Reading delay before typing - vessel reads before it speaks
 - [x] In-character error messages - vessel stays in persona on failure
 - [x] context.WithTimeout for Groq API - prevent hanging on slow connections
 - [ ] Clarify whatsmeow fork in HOW_TO_BUILD.md
