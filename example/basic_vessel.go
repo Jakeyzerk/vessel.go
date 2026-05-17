@@ -344,10 +344,15 @@ func handleMessage(evt *events.Message, apiKey string) {
                 Content: text,
         })
 
-        // Vessel thinks before it speaks.
-        // This pause is intentional - it's what separates vessel from every other bot.
-        thinkingDuration := calculateThinkingTime(text)
-        simulateTyping(chatJID, thinkingDuration)
+	// Vessel reads before it thinks.
+	// First, a moment of silence - vessel absorbs what was said.
+	// Then, typing begins. Like a real person would.
+	readingDuration := calculateReadingTime(text)
+	time.Sleep(readingDuration)
+
+	// Vessel thinks before it speaks.
+	thinkingDuration := calculateThinkingTime(text)
+	simulateTyping(chatJID, thinkingDuration)
 
         // Ask Groq - the persona speaks
 	reply, err := callGroq(apiKey, conversationHistory)
@@ -428,6 +433,27 @@ func calculateThinkingTime(message string) time.Duration {
         }
 
         return total
+}
+
+	// calculateReadingTime - how long vessel sits in silence before typing.
+	// Short messages get a brief pause. Long ones get more time to land.
+func calculateReadingTime(message string) time.Duration {
+	chars := len(message)
+
+	// Base: 1 second minimum
+	base := 1
+
+	// Add ~0.05s per character - simulates reading speed
+	readTime := chars / 20
+
+	total := base + readTime
+
+	// Cap at 5 seconds - reading pause, not absence
+	if total > 5 {
+		total = 5
+	}
+
+	return time.Duration(total) * time.Second
 }
 
 // -----------------------------------------------------------------------------
