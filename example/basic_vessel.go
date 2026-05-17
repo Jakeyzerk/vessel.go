@@ -350,12 +350,21 @@ func handleMessage(evt *events.Message, apiKey string) {
         simulateTyping(chatJID, thinkingDuration)
 
         // Ask Groq - the persona speaks
-        reply, err := callGroq(apiKey, conversationHistory)
-        if err != nil {
-                fmt.Println("⚠  Could not reach the vessel:", err)
-                sendText(chatJID, "...")
-                return
-        }
+	reply, err := callGroq(apiKey, conversationHistory)
+	if err != nil {
+	    fmt.Println("⚠  Could not reach the vessel:", err)
+	    // Vessel stays in persona even when something breaks.
+	    // A technical error should never break the emotional space.
+	    inCharacterError := []string{
+	        "i'm here, just give me a moment.",
+	        "sorry, i lost my train of thought. say that again?",
+	        "something felt off just now. i'm still here though.",
+	        "...",
+	    }
+	    rand.Seed(time.Now().UnixNano())
+	    sendText(chatJID, inCharacterError[rand.Intn(len(inCharacterError))])
+	    return
+	}
 
         // Remember what was said - vessel carries the conversation within this session
         conversationHistory = append(conversationHistory, GroqMessage{
@@ -479,8 +488,11 @@ Rules:
         req.Header.Set("Authorization", "Bearer "+apiKey)
         req.Header.Set("Content-Type", "application/json")
 
-        httpClient := &http.Client{Timeout: 30 * time.Second}
-        resp, err := httpClient.Do(req)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	httpClient := &http.Client{}
+	resp, err := httpClient.Do(req.WithContext(ctx))
         if err != nil {
                 return "", err
         }
